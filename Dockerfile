@@ -1,4 +1,4 @@
-FROM php:7.1
+FROM php:7.2.34
 
 RUN apt-get update && \
     apt-get install -y \
@@ -21,13 +21,17 @@ RUN apt-get update && \
         zip \
         unzip \
         rsync \
-        openssh-client && \
+        openssh-client \
+        autoconf \
+        build-essential && \
     rm -rf /var/lib/apt/lists/* && \
-    wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer && \
-    chmod a+rx /usr/local/bin/composer && \
     wget https://phar.phpunit.de/phpunit-6.phar -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
+# Composer 
+RUN set -ex; \     
+    curl -sS https://getcomposer.org/installer | php -- --version=1.10.16 --install-dir=/usr/local/bin --filename=composer; \     
+    chmod +x /usr/local/bin/composer
 
 ## ----- Set LOCALE to UTF8
 RUN apt update && apt install -y locales && \
@@ -38,6 +42,10 @@ RUN apt update && apt install -y locales && \
 ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
+
+RUN pecl install mongodb
+
+RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
 
 RUN docker-php-ext-configure mysqli && \
     docker-php-ext-install mysqli && \
@@ -54,7 +62,7 @@ RUN docker-php-ext-configure mysqli && \
     docker-php-ext-install pcntl && \
     docker-php-ext-install ftp && \
     docker-php-ext-install sockets && \
-    docker-php-ext-install bcmath
+    docker-php-ext-install bcmath 
 
 # Installation de Vault
 ENV VAULT_VERSION="0.10.4"
