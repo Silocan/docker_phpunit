@@ -1,4 +1,4 @@
-FROM php:7.3
+FROM php:7.4
 
 RUN apt-get update && \
     apt-get install -y \
@@ -15,6 +15,7 @@ RUN apt-get update && \
         libcurl4-openssl-dev \
         libssl-dev \
         libzip-dev \
+        libonig-dev \
         curl \
         git \
         subversion \
@@ -43,11 +44,12 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN docker-php-ext-configure mysqli && \
+RUN \
+    docker-php-ext-configure mysqli && \
     docker-php-ext-install mysqli && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install pdo_mysql && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/lib && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install gd && \
     docker-php-ext-install soap && \
     docker-php-ext-install intl && \
