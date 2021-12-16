@@ -25,7 +25,7 @@ RUN apt-get update && \
         autoconf \
         build-essential && \
     rm -rf /var/lib/apt/lists/* && \
-    wget https://phar.phpunit.de/phpunit-6.phar -O /usr/local/bin/phpunit && \
+    wget https://phar.phpunit.de/phpunit-6.phar --no-check-certificate -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
 # Composer 
