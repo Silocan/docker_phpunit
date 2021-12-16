@@ -25,7 +25,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer && \
     chmod a+rx /usr/local/bin/composer && \
-    wget https://phar.phpunit.de/phpunit-6.phar -O /usr/local/bin/phpunit && \
+    wget https://phar.phpunit.de/phpunit-6.phar --no-check-certificate -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
 
