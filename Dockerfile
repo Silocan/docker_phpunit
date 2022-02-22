@@ -1,4 +1,4 @@
-FROM php:7.3
+FROM php:8.1
 
 RUN apt-get update && \
     apt-get install -y \
@@ -15,6 +15,7 @@ RUN apt-get update && \
         libcurl4-openssl-dev \
         libssl-dev \
         libzip-dev \
+        libonig-dev \
         curl \
         git \
         subversion \
@@ -24,12 +25,12 @@ RUN apt-get update && \
         rsync \
         openssh-client && \
     rm -rf /var/lib/apt/lists/* && \
-    wget https://phar.phpunit.de/phpunit-7.phar -O /usr/local/bin/phpunit && \
+    wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
 # Composer 
 RUN set -ex; \     
-    curl -sS https://getcomposer.org/installer | php -- --version=1.10.16 --install-dir=/usr/local/bin --filename=composer; \     
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
     chmod +x /usr/local/bin/composer
 
 
@@ -43,11 +44,9 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN docker-php-ext-configure mysqli && \
-    docker-php-ext-install mysqli && \
-    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
+RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install pdo_mysql && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/lib && \
+    docker-php-ext-configure gd --enable-gd --with-jpeg --with-freetype && \
     docker-php-ext-install gd && \
     docker-php-ext-install soap && \
     docker-php-ext-install intl && \
@@ -61,7 +60,7 @@ RUN docker-php-ext-configure mysqli && \
     docker-php-ext-install bcmath
 
 # Installation de Vault
-ENV VAULT_VERSION="0.10.4"
+ENV VAULT_VERSION="1.7.0"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
 
 RUN wget https://releases.hashicorp.com/vault/$VAULT_VERSION/$VAULT_ZIP && \
