@@ -23,6 +23,7 @@ RUN apt-get update && \
         zip \
         unzip \
         rsync \
+        bash \
         openssh-client && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
