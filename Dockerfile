@@ -60,6 +60,11 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install sockets && \
     docker-php-ext-install bcmath
 
+
+# Install and configure MongoDB Ext
+RUN apt-get update && apt-get install -y autoconf build-essential && \
+    pecl install mongodb
+
 # Installation de Vault
 ENV VAULT_VERSION="1.7.0"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
