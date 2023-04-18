@@ -2,32 +2,35 @@ FROM php:8.2
 
 RUN apt-get update && \
     apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libgmp-dev \
-        libxml2-dev \
-        zlib1g-dev \
-        libncurses5-dev \
-        libldap2-dev \
-        libicu-dev \
-        libmemcached-dev \
-        libcurl4-openssl-dev \
-        libssl-dev \
-        libzip-dev \
-        libonig-dev \
-        curl \
-        git \
-        subversion \
-        wget \
-        zip \
-        unzip \
-        rsync \
-        bash \
-        openssh-client && \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libgmp-dev \
+    libxml2-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libldap2-dev \
+    libicu-dev \
+    libmemcached-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libzip-dev \
+    libonig-dev \
+    curl \
+    git \
+    subversion \
+    wget \
+    zip \
+    unzip \
+    rsync \
+    bash \
+    openssh-client && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
+
+RUN wget https://phar.phpunit.de/phpunit-9.phar -O /usr/local/bin/phpunit9 && \
+    chmod +x /usr/local/bin/phpunit9
 
 # Composer 
 RUN set -ex; \     
@@ -51,7 +54,7 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install gd && \
     docker-php-ext-install soap && \
     docker-php-ext-install intl && \
-#    docker-php-ext-install mcrypt && \
+    #    docker-php-ext-install mcrypt && \
     docker-php-ext-install gmp && \
     docker-php-ext-install mbstring && \
     docker-php-ext-install zip && \
@@ -66,4 +69,4 @@ ENV VAULT_VERSION="1.7.0"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
 
 RUN wget https://releases.hashicorp.com/vault/$VAULT_VERSION/$VAULT_ZIP && \
-	unzip $VAULT_ZIP -d /usr/sbin && rm $VAULT_ZIP
+    unzip $VAULT_ZIP -d /usr/sbin && rm $VAULT_ZIP
