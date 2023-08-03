@@ -30,6 +30,9 @@ RUN apt-get update && \
     wget https://phar.phpunit.de/phpunit-6.phar --no-check-certificate -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
+RUN wget https://phar.phpunit.de/phpunit-9.phar -O /usr/local/bin/phpunit9 && \
+    chmod +x /usr/local/bin/phpunit9
+
 # Composer 
 RUN set -ex; \     
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
@@ -45,9 +48,9 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN pecl install mongodb
-
-RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
+# MongoDb
+RUN pecl install mongodb && \
+    echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
 
 RUN docker-php-ext-configure mysqli && \
     docker-php-ext-install mysqli && \
