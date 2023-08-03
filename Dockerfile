@@ -69,6 +69,9 @@ RUN docker-php-ext-configure mysqli && \
     docker-php-ext-install sockets && \
     docker-php-ext-install bcmath 
 
+# PostgreSQL
+RUN apt install -y libpq-dev &&docker-php-ext-install pdo_pgsql
+
 # Installation de Vault
 ENV VAULT_VERSION="1.7.0"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
