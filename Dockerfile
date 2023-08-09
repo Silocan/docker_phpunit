@@ -62,6 +62,7 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install ftp && \
     docker-php-ext-install sockets && \
     docker-php-ext-install bcmath && \
+    docker-php-ext-install calendar && \
     pecl install mongodb
 
 # Installation de Vault
