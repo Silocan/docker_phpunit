@@ -2,20 +2,6 @@ FROM php:8.1
 
 RUN apt-get update && \
     apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libgmp-dev \
-        libxml2-dev \
-        zlib1g-dev \
-        libncurses5-dev \
-        libldap2-dev \
-        libicu-dev \
-        libmemcached-dev \
-        libcurl4-openssl-dev \
-        libssl-dev \
-        libzip-dev \
-        libonig-dev \
         curl \
         git \
         subversion \
@@ -45,25 +31,14 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
-    docker-php-ext-install pdo_mysql && \
-    docker-php-ext-configure gd --enable-gd --with-jpeg --with-freetype && \
-    docker-php-ext-install gd && \
-    docker-php-ext-install soap && \
-    docker-php-ext-install intl && \
-#    docker-php-ext-install mcrypt && \
-    docker-php-ext-install gmp && \
-    docker-php-ext-install mbstring && \
-    docker-php-ext-install zip && \
-    docker-php-ext-install pcntl && \
-    docker-php-ext-install ftp && \
-    docker-php-ext-install sockets && \
-    docker-php-ext-install bcmath
+## 
+RUN curl -sSLf \
+    -o /usr/local/bin/install-php-extensions \
+    https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions
 
 
-# Install and configure MongoDB Ext
-RUN apt-get update && apt-get install -y autoconf build-essential && \
-    pecl install mongodb
+RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb-1.15.1 ldap soap;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.7.0"
