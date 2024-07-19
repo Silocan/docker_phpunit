@@ -1,4 +1,4 @@
-FROM php:7.2.34
+FROM php:7.2
 
 RUN apt-get update && \
     apt-get install -y \
@@ -43,26 +43,14 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN pecl install mongodb
+## 
+RUN curl -sSLf \
+    -o /usr/local/bin/install-php-extensions \
+    https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions
 
-RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
 
-RUN docker-php-ext-configure mysqli && \
-    docker-php-ext-install mysqli && \
-    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
-    docker-php-ext-install pdo_mysql && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/lib && \
-    docker-php-ext-install gd && \
-    docker-php-ext-install soap && \
-    docker-php-ext-install intl && \
-#    docker-php-ext-install mcrypt && \
-    docker-php-ext-install gmp && \
-    docker-php-ext-install mbstring && \
-    docker-php-ext-install zip && \
-    docker-php-ext-install pcntl && \
-    docker-php-ext-install ftp && \
-    docker-php-ext-install sockets && \
-    docker-php-ext-install bcmath 
+RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb-1.15.1 ldap soap mbstring ftp;
 
 # Installation de Vault
 ENV VAULT_VERSION="0.10.4"
