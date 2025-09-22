@@ -45,30 +45,17 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-RUN pecl install mongodb
-
-RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
-
-RUN docker-php-ext-configure mysqli && \
-    docker-php-ext-install mysqli && \
-    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
-    docker-php-ext-install pdo_mysql && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install gd && \
-    docker-php-ext-install soap && \
-    docker-php-ext-install intl && \
-#    docker-php-ext-install mcrypt && \
-    docker-php-ext-install gmp && \
-    docker-php-ext-install mbstring && \
-    docker-php-ext-install zip && \
-    docker-php-ext-install pcntl && \
-    docker-php-ext-install ftp && \
-    docker-php-ext-install sockets && \
-    docker-php-ext-install bcmath 
-
 # Installation de Vault
-ENV VAULT_VERSION="1.7.0"
+ENV VAULT_VERSION="1.19.5"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
 
 RUN wget https://releases.hashicorp.com/vault/$VAULT_VERSION/$VAULT_ZIP && \
 	unzip $VAULT_ZIP -d /usr/sbin && rm $VAULT_ZIP
+    
+RUN curl -sSLf \
+-o /usr/local/bin/install-php-extensions \
+https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+chmod +x /usr/local/bin/install-php-extensions
+
+RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb ldap soap imagick apcu imap sockets;
+
