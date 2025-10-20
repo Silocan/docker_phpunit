@@ -1,4 +1,4 @@
-FROM php:8.3
+FROM php:8.4
 
 RUN apt-get update && \
     apt-get install -y \
@@ -53,7 +53,7 @@ RUN curl -sSLf \
     https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
     chmod +x /usr/local/bin/install-php-extensions
 
-RUN install-php-extensions ldap xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb soap amqp gmp;
+RUN install-php-extensions amqp bcmath calendar curl gd gmp intl ldap mysqli mongodb opcache pdo pdo_mysql redis soap xdebug xml zip;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.19.5"
