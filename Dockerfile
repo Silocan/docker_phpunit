@@ -45,7 +45,7 @@ RUN install-php-extensions bcmath calendar curl gd intl ldap mysqli opcache pdo 
     docker-php-ext-enable mongodb;
 
 # Installation de Vault
-ENV VAULT_VERSION="1.7.0"
+ENV VAULT_VERSION="1.19.5"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
 
 RUN wget https://releases.hashicorp.com/vault/$VAULT_VERSION/$VAULT_ZIP && \
