@@ -10,7 +10,9 @@ RUN apt-get update && \
         unzip \
         rsync \
         bash \
-        openssh-client && \
+        openssh-client \
+        pkg-config \
+        libssl-dev && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
@@ -38,7 +40,9 @@ RUN curl -sSLf \
     chmod +x /usr/local/bin/install-php-extensions
 
 
-RUN install-php-extensions bcmath blackfire calendar curl gd intl ldap mongodb mysqli opcache pdo pdo_mysql redis soap xml xdebug zip;
+RUN install-php-extensions bcmath calendar curl gd intl ldap mysqli opcache pdo pdo_mysql redis soap xml xdebug zip && \
+    pecl install mongodb-1.21.2 && \
+    docker-php-ext-enable mongodb;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.7.0"
