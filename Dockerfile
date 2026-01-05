@@ -38,7 +38,7 @@ RUN curl -sSLf \
     chmod +x /usr/local/bin/install-php-extensions
 
 
-RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb-1.15.1 ldap soap;
+RUN install-php-extensions bcmath blackfire calendar curl gd intl ldap mongodb mysqli opcache pdo pdo_mysql redis soap xml xdebug zip;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.7.0"
