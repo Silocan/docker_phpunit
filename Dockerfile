@@ -10,16 +10,14 @@ RUN apt-get update && \
         unzip \
         rsync \
         bash \
-        openssh-client \
-        pkg-config \
-        libssl-dev && \
+        openssh-client && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
-# Composer 
-RUN set -ex; \     
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
+# Composer
+RUN set -ex; \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \
     chmod +x /usr/local/bin/composer
 
 
@@ -33,16 +31,14 @@ ENV LOCALTIME Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 
-## 
+##
 RUN curl -sSLf \
     -o /usr/local/bin/install-php-extensions \
     https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
     chmod +x /usr/local/bin/install-php-extensions
 
 
-RUN install-php-extensions bcmath calendar curl gd intl ldap mysqli opcache pdo pdo_mysql redis soap xml xdebug zip && \
-    pecl install mongodb-1.21.2 && \
-    docker-php-ext-enable mongodb;
+RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb-1.15.1 ldap soap;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.19.5"
