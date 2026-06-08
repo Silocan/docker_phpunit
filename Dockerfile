@@ -1,5 +1,11 @@
 FROM php:7.2
 
+# Buster est EOL : les dépôts officiels renvoient 404, on utilise l'archive
+RUN sed -i '/buster-updates/d' /etc/apt/sources.list \
+    && sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list \
+    && sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list \
+    && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
 RUN apt-get update && \
     apt-get install -y \
         libfreetype6-dev \
@@ -28,10 +34,15 @@ RUN apt-get update && \
     wget https://phar.phpunit.de/phpunit-6.phar --no-check-certificate -O /usr/local/bin/phpunit && \
     chmod +x /usr/local/bin/phpunit
 
-# Composer 
+# Composer 1
 RUN set -ex; \     
-    curl -sS https://getcomposer.org/installer | php -- --version=1.10.16 --install-dir=/usr/local/bin --filename=composer; \     
-    chmod +x /usr/local/bin/composer
+    curl -sS https://getcomposer.org/installer | php -- --version=1.10.16 --install-dir=/usr/local/bin --filename=composer1; \     
+    chmod +x /usr/local/bin/composer1
+
+# Composer 2
+RUN set -ex; \     
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \     
+chmod +x /usr/local/bin/composer
 
 ## ----- Set LOCALE to UTF8
 RUN apt update && apt install -y locales && \
@@ -53,8 +64,8 @@ RUN curl -sSLf \
 RUN install-php-extensions blackfire xdebug intl opcache pdo gd zip bcmath xml mysqli curl calendar pdo_mysql redis mongodb-1.15.1 ldap soap mbstring ftp;
 
 # Installation de Vault
-ENV VAULT_VERSION="0.10.4"
+ENV VAULT_VERSION="1.19.5"
 ENV VAULT_ZIP="vault_${VAULT_VERSION}_linux_amd64.zip"
 
 RUN wget https://releases.hashicorp.com/vault/$VAULT_VERSION/$VAULT_ZIP && \
-	unzip $VAULT_ZIP -d /usr/sbin && rm $VAULT_ZIP
+    unzip $VAULT_ZIP -d /usr/sbin && rm $VAULT_ZIP
