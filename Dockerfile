@@ -1,4 +1,4 @@
-FROM php:8.4
+FROM php:8.5
 
 RUN apt-get update && \
     apt-get install -y \
@@ -25,12 +25,10 @@ RUN apt-get update && \
     rsync \
     bash \
     openssh-client && \
-    rm -rf /var/lib/apt/lists/* && \
-    wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit && \
-    chmod +x /usr/local/bin/phpunit
+    rm -rf /var/lib/apt/lists/*
 
-RUN wget https://phar.phpunit.de/phpunit-9.phar -O /usr/local/bin/phpunit9 && \
-    chmod +x /usr/local/bin/phpunit9
+RUN wget https://phar.phpunit.de/phpunit-13.phar -O /usr/local/bin/phpunit && \
+    chmod +x /usr/local/bin/phpunit
 
 # Composer 
 RUN set -ex; \     
