@@ -54,8 +54,8 @@ RUN curl -sSLf \
     https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
     chmod +x /usr/local/bin/install-php-extensions
 
-
-RUN install-php-extensions blackfire bcmath calendar curl gd intl ldap mongodb-2.1.1 mysqli opcache pdo pdo_mysql redis soap xdebug xml zip;
+‘
+RUN install-php-extensions blackfire bcmath calendar curl gd intl ldap mongodb mysqli opcache pdo pdo_mysql redis soap xdebug xml zip;
 
 # Installation de Vault
 ENV VAULT_VERSION="1.19.5"
